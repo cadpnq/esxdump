@@ -1,0 +1,3 @@
+# Custom for FO4 plugins
+*.esp     diff=esxdump
+*.esm     diff=esxdump

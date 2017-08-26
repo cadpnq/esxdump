@@ -1,0 +1,1 @@
+node esxdump.js %1
