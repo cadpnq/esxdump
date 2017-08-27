@@ -1,1 +1,2 @@
-node esxdump.js %1
+@echo off
+node "%~dp0esxdump.js" "%1"
