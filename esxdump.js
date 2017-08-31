@@ -34,10 +34,20 @@ let field = new Parser()
       readUntil: "eof"
     })
 
+function print_string(data) {
+  return data;
+}
+
+let printers = new Map();
+printers.set("EDID", print_string);
+printers.set("TES4.CNAM", print_string);
+printers.set("TES4.MAST", print_string);
+printers.set("MSWP.BNAM", print_string);
+printers.set("MSWP.SNAM", print_string);
+
 let compressed_records = 0;
 let records = 0;
 let groups = 0;
-
 
 let buff;
 let s = fs.createReadStream(process.argv[2]);
@@ -80,7 +90,16 @@ s.on("data", (chunk) => {
     records += 1;
     console.log(`${sprintf("%08x", h.id)} - ${h.type}`);
     for (let f of fs.fields) {
-      console.log(`\t${f.type} - ${hasha(f.data, {algorithm: 'md5'})}`);
+      let printed;
+      if (printers.has(f.type)) {
+        printed = printers.get(f.type)(f.data);
+      } else if (printers.has(`${h.type}.${f.type}`)) {
+        printed = printers.get(`${h.type}.${f.type}`)(f.data);
+      } else {
+        printed = hasha(f.data, {algorithm: 'md5'});
+      }
+
+      console.log(`\t${f.type} - ${printed}`);
     }
     buff = buff.slice(h.dataSize + 24);
   }
