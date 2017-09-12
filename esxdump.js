@@ -35,11 +35,13 @@ let field = new Parser()
     })
 
 function print_string(data) {
-  return data;
+  return data.replace(/\0/g, '');
 }
 
 let printers = new Map();
 printers.set("EDID", print_string);
+printers.set("FULL", print_string);
+printers.set("DESC", print_string);
 printers.set("TES4.CNAM", print_string);
 printers.set("TES4.MAST", print_string);
 printers.set("MSWP.BNAM", print_string);
