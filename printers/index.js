@@ -82,8 +82,7 @@ let ctda = new Parser()
     .uint8("operator")
     .array("unknown00", {
 	type: 'uint8',
-	length: 3,
-	formatter: (arr) => { return arr.join(' '); }
+	length: 3
     })
     .buffer("comparisonValue", {
 	length: 4
@@ -92,7 +91,6 @@ let ctda = new Parser()
     .array("padding", {
 	type: 'uint8',
 	length: 2,
-	formatter: (arr) => { return arr.join(' '); }
     })
     .buffer("params", {
 	length: 8
@@ -106,23 +104,22 @@ let ctda = new Parser()
 	
 function print_ctda(data) {
     let d = ctda.parse(data);
-    let ret = "operator - " + d.operator;
-    ret += "\nunknown00 - " + d.unknown00;
-    ret += "\ncomparisonValue - " + (d.operator & 0x04) ? print_formid(d.comparisonValue) : print_float32(d.comparisonValue);
-    ret += "\nfunctionIndex - " + d.functionIndex;
-    ret += "\npadding - " + d.padding;
-    if (d.functionIndex != 4672) {
-	ret += "\nparam1 - " + d.params.readInt32LE(); // this may be a formid, int32 or stringtype, based on the function in d.functionIndex
-	ret += "\nparam2 - " + d.params.readInt32LE(1); // this may be a formid, int32 or stringtype, based on the function in d.functionIndex
-    } else {
-	ret += "\nparam1 - " + d.params.readUInt16LE();
-	ret += "\nparam2 - " + d.params.toString('binary', 2, 5);
-	ret += "\nparam3 - " + sprintf("%08x", d.params.readUInt32LE(1));
-    }
-    ret += "\nrunOnType - " + d.runOnType;
-    ret += "\nreference - " + print_formid(d.reference);
-    ret += "\nunknown01 - " + d.unknown01;
-    return ret;
+    return (
+`operator : ${d.operator}
+unknown00 : ${d.unknown00.map((x) => sprintf("%02x", x)).join(' ')}
+comparisonValue : ${(d.operator & 0x04) ? print_formid(d.comparisonValue) : print_float32(d.comparisonValue)}
+functionIndex : ${d.functionIndex}
+padding : ${d.padding.map((x) => sprintf("%02x", x)).join(' ')}
+${(d.functionIndex != 4672 ?
+`param1 : ${d.params.readInt32LE() /* formid, int32 or stringtype, based on the function in d.functionIndex */}
+param2 : ${d.params.readInt32LE(1) /* formid, int32 or stringtype, based on the function in d.functionIndex */}` :
+`param1 : ${d.params.readUInt16LE()}
+    param2 : ${d.params.toString('binary', 2, 5)}
+    param3 : ${sprintf("%08x", d.params.readUInt32LE(1))}`
+)}
+runOnType : ${d.runOnType}
+reference : ${print_formid(d.reference)}
+unknown01 : ${d.unknown01}`);
 }
 
 let printers = new Map();
