@@ -4,7 +4,7 @@ const hasha = require("hasha");
 const zlib = require('zlib');
 const fs = require("fs");
 
-const printers = require("./printers/index.js").printers;
+const printers = require("./printers");
 
 let header = new Parser()
   .endianess("little")

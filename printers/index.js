@@ -144,6 +144,4 @@ printers.set("MESG.CTDA", print_ctda);
 
 
 
-module.exports = {
-    printers: printers
-}
+module.exports = printers;
