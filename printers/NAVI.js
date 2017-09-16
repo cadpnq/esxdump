@@ -1,14 +1,11 @@
+const Parser = require("binary-parser").Parser;
+const sprintf = require("sprintf-js").sprintf;
+const hasha = require("hasha");
 const generic = require("./generic");
 
-module.exports["NAVI.NVER"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["NAVI.NVER"] = generic.print_as_hash;
 
-module.exports["NAVI.NVMI"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["NAVI.NVMI"] = generic.print_as_hash;
 
-module.exports["NAVI.NVPP"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["NAVI.NVPP"] = generic.print_as_hash;
 

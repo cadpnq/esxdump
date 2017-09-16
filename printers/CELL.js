@@ -1,133 +1,76 @@
+const Parser = require("binary-parser").Parser;
+const sprintf = require("sprintf-js").sprintf;
+const hasha = require("hasha");
 const generic = require("./generic");
 
 // this field is potentially common among the following records: ACHR, ADDN, ALCH, AMMO, ARMO, ASTP, BOOK, CAMS, CELL, CLAS, CMPO, CONT, CPTH, CSTY, DEBR, DFOB, DIAL, ECZN, EFSH, EQUP, EXPL, FACT, FSTP, FSTS, GDRY, GMST, GRAS, HDPT, IDLE, INGR, IPCT, KEYM, KYWD, LAND, LGTM, LIGH, MATO, MGEF, MISC, MSTT, NOCM, NOTE, NPC_, OMOD, OVIS, PERK, PGRE, PHZD, PMIS, PROJ, RACE, REFR, RELA, REVB, RFCT, SCEN, SCOL, SPGD, TRNS, WATR, WRLD, WTHR
-module.exports["CELL.DATA"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.DATA"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: AACT, ACHR, ACTI, ADDN, AECH, ALCH, AMDL, AMMO, ANIO, AORU, ARMA, ARMO, ARTO, ASPC, ASTP, AVIF, BNDS, BOOK, BPTD, CAMS, CELL, CLAS, CLFM, CLMT, CMPO, COBJ, COLL, CONT, CPTH, CSTY, DEBR, DFOB, DIAL, DLBR, DLVW, DMGT, DOOR, ECZN, EFSH, ENCH, EQUP, EXPL, FACT, FLOR, FLST, FSTP, FSTS, FURN, GDRY, GLOB, GMST, GRAS, HAZD, HDPT, IDLE, IDLM, IMAD, IMGS, INFO, INGR, INNR, IPCT, IPDS, KEYM, KSSM, KYWD, LAYR, LCRT, LCTN, LENS, LGTM, LIGH, LSCR, LTEX, LVLI, LVLN, MATO, MATT, MESG, MGEF, MISC, MOVT, MSTT, MSWP, MUSC, MUST, NOTE, NPC_, OMOD, OTFT, PACK, PERK, PHZD, PKIN, PROJ, QUST, RACE, REFR, REGN, RELA, REVB, RFCT, SCCO, SCEN, SCOL, SCSN, SMBN, SMEN, SMQN, SNCT, SNDR, SOPM, SOUN, SPEL, SPGD, STAG, STAT, TACT, TERM, TREE, TRNS, TXST, VTYP, WATR, WEAP, WRLD, WTHR, ZOOM
-module.exports["CELL.EDID"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.EDID"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: ACTI, ALCH, AMMO, ARMO, AVIF, BOOK, CELL, CLAS, CLFM, CMPO, CONT, DIAL, DOOR, ENCH, EXPL, FACT, FLOR, FLST, FURN, HAZD, HDPT, INGR, KEYM, KYWD, LCTN, LIGH, MESG, MGEF, MISC, MSTT, NOTE, NPC_, OMOD, PERK, PROJ, QUST, RACE, REFR, SCOL, SNCT, SPEL, STAT, TACT, TERM, WATR, WEAP, WRLD
-module.exports["CELL.FULL"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.FULL"] = generic.print_as_hash;
 
-module.exports["CELL.LTMP"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.LTMP"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: CELL, WRLD
-module.exports["CELL.MHDT"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.MHDT"] = generic.print_as_hash;
 
-module.exports["CELL.PCMB"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.PCMB"] = generic.print_as_hash;
 
-module.exports["CELL.RVIS"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.RVIS"] = generic.print_as_hash;
 
-module.exports["CELL.TVDT"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.TVDT"] = generic.print_as_hash;
 
-module.exports["CELL.VISI"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.VISI"] = generic.print_as_hash;
 
-module.exports["CELL.XCAS"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCAS"] = generic.print_as_hash;
 
-module.exports["CELL.XCCM"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCCM"] = generic.print_as_hash;
 
-module.exports["CELL.XCIM"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCIM"] = generic.print_as_hash;
 
-module.exports["CELL.XCLC"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCLC"] = generic.print_as_hash;
 
-module.exports["CELL.XCLL"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCLL"] = generic.print_as_hash;
 
-module.exports["CELL.XCLR"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCLR"] = generic.print_as_hash;
 
-module.exports["CELL.XCLW"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCLW"] = generic.print_as_hash;
 
-module.exports["CELL.XCMO"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCMO"] = generic.print_as_hash;
 
-module.exports["CELL.XCRI"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCRI"] = generic.print_as_hash;
 
-module.exports["CELL.XCWT"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XCWT"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: ACHR, CELL, PGRE, REFR
-module.exports["CELL.XEZN"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XEZN"] = generic.print_as_hash;
 
-module.exports["CELL.XGDR"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XGDR"] = generic.print_as_hash;
 
-module.exports["CELL.XILL"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XILL"] = generic.print_as_hash;
 
-module.exports["CELL.XILW"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XILW"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: ACHR, CELL, WRLD
-module.exports["CELL.XLCN"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XLCN"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: ACHR, CELL, PGRE, REFR
-module.exports["CELL.XOWN"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XOWN"] = generic.print_as_hash;
 
-module.exports["CELL.XPRI"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XPRI"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: ACHR, CELL, PHZD, REFR
-module.exports["CELL.XRNK"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XRNK"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: CELL, REFR
-module.exports["CELL.XWCN"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XWCN"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: CELL, REFR
-module.exports["CELL.XWCU"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XWCU"] = generic.print_as_hash;
 
 // this field is potentially common among the following records: CELL, WRLD
-module.exports["CELL.XXXX"] = (data) => {
-  return generic.print_as_hash(data);
-}
+exports["CELL.XXXX"] = generic.print_as_hash;
 
