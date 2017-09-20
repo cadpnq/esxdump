@@ -42,7 +42,13 @@ let records = 0;
 let groups = 0;
 
 let buff;
-let s = fs.createReadStream(process.argv[2]);
+let file = process.argv[2];
+let ext = file.split('.').pop();
+if (ext !== 'esp' && ext !== 'esm' /*&& !== 'esl'*/) { // if we decide to include it
+  console.log(`File '${file}' is not of correct type; expected '*.esp' or '*.esm'`);
+  return;
+}
+let s = fs.createReadStream(file);
 s.on("data", (chunk) => {
   if (!buff) {
     buff = chunk;
