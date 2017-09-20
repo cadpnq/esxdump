@@ -1,2 +1,2 @@
 @echo off
-node "%~dp0esxdump.js" "%1"
+node "%~dp0esxdump.js" "%~1"
