@@ -18,10 +18,30 @@ let header = new Parser()
 
 let field = new Parser()
   .endianess("little")
-  .string("type", {length: 4})
-  .uint16("size")
-  .buffer("data", {
-    length: "size"
+  .string("type", { length: 4 })
+  .choice("", {
+    tag: "type",
+    choices: {
+    "XXXX": Parser.start()  // the XXXX field basically mean "prepare for a big data"
+      .endianess("little")
+      .skip(2)
+      .uint32("xxxx")
+      .string("type", { length: 4 })
+      .uint16("size")
+      .buffer("data", {
+        length: function() {
+          let len = this.xxxx;
+          delete this["xxxx"];
+          return len;
+        }
+      })
+    },
+    defaultChoice: Parser.start()
+    .endianess("little")
+    .uint16("size")
+    .buffer("data", {
+      length: "size"
+    })
   })
 
   let fields = new Parser()
