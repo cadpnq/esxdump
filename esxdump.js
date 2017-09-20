@@ -25,15 +25,11 @@ let field = new Parser()
     "XXXX": Parser.start()  // the XXXX field basically mean "prepare for a big data"
       .endianess("little")
       .skip(2)
-      .uint32("xxxx")
+      .uint32("size")
       .string("type", { length: 4 })
-      .uint16("size")
+      .skip(2)
       .buffer("data", {
-        length: function() {
-          let len = this.xxxx;
-          delete this["xxxx"];
-          return len;
-        }
+        length: "size"
       })
     },
     defaultChoice: Parser.start()
