@@ -60,8 +60,8 @@ let groups = 0;
 let buff;
 let file = process.argv[2];
 let ext = file.split('.').pop();
-if (ext !== 'esp' && ext !== 'esm' /*&& !== 'esl'*/) { // if we decide to include it
-  console.log(`File '${file}' is not of correct type; expected '*.esp' or '*.esm'`);
+if (ext !== 'esm' && ext !== 'esp' && ext !== 'esl') {
+  console.log(`File '${file}' is not of correct type; expected '*.es[m|p|l]'`);
   return;
 }
 let s = fs.createReadStream(file);
