@@ -18,39 +18,17 @@ let header = new Parser()
 
 let field = new Parser()
   .endianess("little")
-  .string("type", { length: 4 })
-  .choice("", {
-    tag: "type",
-    choices: {
-    "XXXX": Parser.start()  // the XXXX field basically mean "prepare for a big data"
-      .endianess("little")
-      .skip(2)
-      .uint32("size")
-      .string("type", { length: 4 })
-      .skip(2)
-      .buffer("data", {
-        length: "size"
-      })
-    },
-    defaultChoice: Parser.start()
-    .endianess("little")
-    .uint16("size")
-    .buffer("data", {
-      length: "size"
-    })
+  .string("type", {length: 4})
+  .uint16("size")
+  .buffer("data", {
+    length: "size"
   })
 
-  let fields = new Parser()
-    .array("fields", {
-      type: field,
-      readUntil: "eof"
-    })
-
-  let compressed = new Parser()
-    .uint32("decompSize")
-    .buffer("compData", {
-      readUntil: "eof"
-    })
+let compressed = new Parser()
+  .uint32("decompSize")
+  .buffer("compData", {
+    readUntil: "eof"
+  })
 
 
 let compressed_records = 0;
@@ -59,8 +37,7 @@ let groups = 0;
 
 let buff;
 let file = process.argv[2];
-let ext = file.split('.').pop();
-if (ext !== 'esm' && ext !== 'esp' && ext !== 'esl') {
+if (!/^.*\.es[m|p|l]$/i.test(file)) {
   console.log(`File '${file}' is not of correct type; expected '*.es[m|p|l]'`);
   return;
 }
@@ -74,7 +51,6 @@ s.on("data", (chunk) => {
 
   let h;
   let data;
-  let fs;
   while (true) {
     if (buff.length < 24) {
       return;
@@ -99,11 +75,20 @@ s.on("data", (chunk) => {
       data = zlib.inflateSync(decomp.compData);
     }
 
-    fs = fields.parse(data);
-
     records += 1;
     console.log(`${sprintf("%08x", h.id)} - ${h.type}`);
-    for (let f of fs.fields) {
+
+    while (data.length) {
+      let f = field.parse(data);
+      data = data.slice(6 + f.size);
+
+      if (f.type == "XXXX") {
+        f.type = data.toString("ascii", 0, 4);
+        f.size = f.data.readUInt32LE();
+        f.data = data.slice(6, 6 + f.size);
+        data = data.slice(6 + f.size);
+      }
+
       let printed;
       if (printers.has(f.type)) {
         printed = printers.get(f.type)(f.data);
