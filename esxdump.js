@@ -89,13 +89,15 @@ s.on("data", (chunk) => {
         data = data.slice(6 + f.size);
       }
 
+      let name = `${h.type}.${f.type}`;
       let printed;
       if (printers.has(f.type)) {
         printed = printers.get(f.type)(f.data);
-      } else if (printers.has(`${h.type}.${f.type}`)) {
-        printed = printers.get(`${h.type}.${f.type}`)(f.data);
+      } else if (printers.has(name)) {
+	let printer = printers.get(name);
+	printed = typeof printer !== "undefined" ? printer(f.data) : `<undefined> ${hasha(f.data, {algorithm: 'md5'})}`;
       } else {
-        printed = hasha(f.data, {algorithm: 'md5'});
+        printed = `<unknown> ${hasha(f.data, {algorithm: 'md5'})}`;
       }
 
       console.log(`\t${f.type} - ${printed}`);
