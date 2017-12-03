@@ -59,6 +59,11 @@ for (let f of new Map([...mappings.entries()].sort())) { // sorting to process o
 	//cur_file_data = tmp;
     }
 }
+// to not miss last record type
+if (typeof cur_record !== "undefined") {
+    fs.writeFileSync(cur_file_path, cur_file_data);
+}
+
 
 if (!fs.existsSync(index_file_path)) {
     let index_output =
