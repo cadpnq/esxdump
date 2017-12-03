@@ -1,18 +1,13 @@
 const sprintf = require("sprintf-js").sprintf;
 const fs = require("fs");
 
-const boilerplate_requires =
-`const Parser = require("binary-parser").Parser;
+const boilerplate_requires = `const Parser = require("binary-parser").Parser;
 const sprintf = require("sprintf-js").sprintf;
 const hasha = require("hasha");
-const generic = require("./generic");
-`;
+const generic = require("./generic");\n`;
 
-const boilerplate_printer = (name) => `
-// START <${name}> - do not edit; auto-generated comments
-exports['${name}'] = undefined; // undefined until implemented
-// END <${name}>
-`;
+const boilerplate_printer = (name) => `// START <${name}> - do not edit; auto-generated comments\n\
+exports['${name}'] = undefined; // undefined until implemented\n// END <${name}>\n\n`;
 
 const fields_file_path = "fields.txt";
 const index_file_path = "printers/index.js";
@@ -36,7 +31,7 @@ let cur_file_data;
 for (let f of new Map([...mappings.entries()].sort())) { // sorting to process one record at a time
     let [record, field] = f[0].split(".");
     let name = `${record}.${field}`;
-    let regexp = new RegExp(String.raw`^(// START <${name}>){1}[\s\S]*(exports\['${name}'\]){1}[\s\S]*^(// END <${name}>){1}$`, 'm');
+    let regexp = new RegExp(String.raw`^\/\/ START <${record}\.${field}>([\s\S])*?exports\['${record}\.${field}'\]([\s\S])*?^\/\/ END <${record}\.${field}>$`, 'm');
 
     if (record !== cur_record) {
 	if (typeof cur_record !== "undefined") {
@@ -49,14 +44,36 @@ for (let f of new Map([...mappings.entries()].sort())) { // sorting to process o
     
     let regexp_match = regexp.exec(cur_file_data);
     if (regexp_match === null) {
-	cur_file_data += boilerplate_printer(name);
+	let sort_regexp = new RegExp(String.raw`^\/\/ START <${record}\.(\S{4,}?)>`, 'gm');
+	
+	// insert it in alphabetical order
+	while(true) {
+	    let sort_match = sort_regexp.exec(cur_file_data);
+	    if (sort_match !== null) {
+		if (typeof sort_match[1] !== "undefined" && field.localeCompare(sort_match[1]) < 0) {
+		    let new_file_data = [
+			cur_file_data.slice(0, sort_match.index),
+			boilerplate_printer(name),
+			cur_file_data.slice(sort_match.index)
+		    ].join("");
+		    cur_file_data = new_file_data;
+		    break;
+		}
+	    } else {
+		cur_file_data += boilerplate_printer(name);
+		break;
+	    }
+	}
     } else {
 	// do any updates here, commenting out the previous
-	//let tmp = cur_file_data.slice(0, regexp_match.index); // everything before match
-	//tmp += String.raw`/*${regexp_match[0]}*/`; // matched content, commented out
-	//tmp += substitute_stuff; 
-	//tmp += cur_file_data.slice(regexp_match.index + regexp_match[0].length); // everything after match
-	//cur_file_data = tmp;
+	//let new_file_data = [
+	//    cur_file_data.slice(0, regexp_match.index),
+	//    // comment out previous code to not lose anything
+	//    String.raw`/*${regexp_match[0]}*/`,
+	//    substitute_stuff_here,
+	//    cur_file_data.slice(regexp_match.index + regexp_match[0].length)
+	//].join("");
+	//cur_file_data = new_file_data;
     }
 }
 // to not miss last record type
