@@ -1,0 +1,25 @@
+{
+    "DESC": {
+	"printer": "generic.string",
+	"records": []
+    },
+    "EDID": {
+	"printer": "generic.string",
+	"records": []
+    },
+    "FULL": {
+	"printer": "generic.string",
+	"records": [
+	    "ACTI", "CONT", "TERM", "FLST",
+	    "KYWD", "NOTE", "MISC", "NPC_",
+	    "CELL", "WRLD", "LCTN", "FURN",
+	    "BOOK", "DOOR", "KEYM", "ARMO",
+	    "OMOD", "MGEF", "LIGH", "STAT",
+	    "FLOR", "ALCH", "QUST"
+	]
+    },
+    "LNAM": {
+	"printer": "generic.formid",
+	"records": []
+    }
+}
